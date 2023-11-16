@@ -22,7 +22,7 @@ async function createUser(e)
     };
     const x=await axios.post('http://localhost:4000/signup',newUser);
     if(x.status==200){
-        window.location.href='./login.html';
+        alert('Successfully signed up');
     }else if(x.status==400){
         alert('User already exists');
     }

@@ -12,7 +12,7 @@ async function generateToken(id)
 
 exports.newUser=async (req, res, next)=>{
     try{
-        console.log('entered the backend');
+        
         const t=await sequelize.transaction();
 
         const name=req.body.name;

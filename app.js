@@ -7,6 +7,7 @@ const app=express();
 
 
 const UserRoute=require('./routers/userRoute');
+const ChatRoute=require('./routers/chatRoute');
 
 app.use(cors({
     origin: "http://127.0.0.1:5500",
@@ -14,6 +15,13 @@ app.use(cors({
 }));
 app.use(bodyParser.json());
 app.use(UserRoute);
+app.use(ChatRoute);
+
+const User=require('./models/user');
+const Chat=require('./models/chat');
+
+Chat.belongsTo(User,{constraints: true, onDelete: 'CASCADE'})
+User.hasMany(Chat);
 
 sequelize.sync()
 .then(()=>{

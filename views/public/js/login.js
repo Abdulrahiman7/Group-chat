@@ -23,7 +23,7 @@ async function login(e)
         if(login.status==200)
         {
             localStorage.setItem('g-chat_token',login.data.token);
-            alert('login successful');
+            window.location.href='http://127.0.0.1:5500/views/chatHome.html';
         }
 
     }catch(err)

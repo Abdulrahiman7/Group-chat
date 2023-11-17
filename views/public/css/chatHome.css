@@ -1,0 +1,29 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+header{
+    display: flex;
+    justify-content: center;
+}
+.chatInput{
+    
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: aquamarine;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.chatInput input{
+    height: 30px;
+    width: 60%;
+}
+.chatInput button{
+    height: 30px;
+    background-color: azure;
+    font-family: Cambria;
+    font-weight: 800;
+}

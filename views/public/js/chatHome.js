@@ -42,9 +42,9 @@ async function displayMessages(message)
     return;
 }
 
+setInterval(showMessages,1000);
 
-
-document.addEventListener('DOMContentLoaded',showMessages);
+// document.addEventListener('DOMContentLoaded',showMessages);
 
 async function showMessages()
 {
@@ -53,7 +53,7 @@ async function showMessages()
         const chat=await axios.get('http://localhost:4000/chatHome',{headers});
         if(chat.status === 200)
         {
-           
+           ul.innerHTML='';
             for(let i=0;i<chat.data.chats.length;i++)
             {
                 displayMessages(chat.data.chats[i].message);

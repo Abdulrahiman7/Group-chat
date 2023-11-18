@@ -16,3 +16,15 @@ exports.inputMessage=async (req, res, next)=>{
         console.log(err);
     }
 }
+
+exports.showMessages= async (req, res, next) =>{
+    try{
+       
+        const chats=await Chat.findAll({attributes: ['message']});
+     
+        res.status(200).json({chats});
+    }catch(err)
+    {
+        res.status(400).json({err:err})
+    }
+}

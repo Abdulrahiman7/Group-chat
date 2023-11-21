@@ -18,23 +18,27 @@ async function messageInput(e)
     const newMessage=await axios.post('http://localhost:4000/chatHome',{message},{headers});
     if(newMessage.status===200)
     {
-        window.location.reload();
+        console.log(newMessage);
+       displayMessages(newMessage.data.newChat.message);
+       document.getElementById('message').value='';
+       return;
     }
     }catch(err)
     {
-        if(err.response.status===400)
+        if(err.status===400)
         {
-            console.log(err);
-        }else alert('user not authorized');
+            alert('user not authorized');
+        }else console.log(err);
     }
     
 }
 const box= document.getElementById('chatBox');
 const ul=document.createElement('ul');
-async function displayMessages(message)
+
+async function displayMessages(newMessage)
 {
-    
-    const text=document.createTextNode(message);
+   
+    const text=document.createTextNode(newMessage);
     const li=document.createElement('li');
     li.appendChild(text);
     ul.appendChild(li);
@@ -44,24 +48,62 @@ async function displayMessages(message)
 
 setInterval(showMessages,1000);
 
-// document.addEventListener('DOMContentLoaded',showMessages);
+document.addEventListener('DOMContentLoaded',showMessagesfromLocal);
+
+async function showMessagesfromLocal()
+{
+    try{
+        let previousChat=localStorage.getItem('g-chat_messages');
+        if(!previousChat)
+        {
+            showMessages();
+
+            return;
+        }else{
+            previousChat=JSON.parse(previousChat);
+           
+            if(previousChat.length>0)
+        {
+            for(let i=previousChat.length-1;i>=0;i--)
+            {
+                displayMessages(previousChat[i].message);
+            }
+            
+        }else return;
+        }
+        
+    }catch(err)
+    {
+        console.log(err)
+    }
+}
 
 async function showMessages()
 {
     try{
-        console.log('entere show');
-        const chat=await axios.get('http://localhost:4000/chatHome',{headers});
+        let previousChat=localStorage.getItem('g-chat_messages');
+        let id=0;
+        let storedMessages=[];
+        if(previousChat)
+        {
+            storedMessages=JSON.parse(previousChat);
+            id=storedMessages[0].id;
+        }
+        const chat=await axios.get(`http://localhost:4000/chatHome?prevId=${id}`,{headers});
         if(chat.status === 200)
         {
-           ul.innerHTML='';
-            for(let i=0;i<chat.data.chats.length;i++)
-            {
-                displayMessages(chat.data.chats[i].message);
-            }
-        }
+            const parsedMessages=JSON.stringify(chat.data.chats);
+           localStorage.setItem('g-chat_messages', parsedMessages);
+            // for(let i=chat.data.chats;i>0;i--)
+            // {
+                
+            //     displayMessages(chat.data.chats[i].message);
+            // }
+            window.location.reload();
+        }else if(chat.status === 201) return;
+        else throw new Error();
     }catch(err)
     {
-        
         console.log(err);
     }
 }

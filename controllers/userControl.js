@@ -34,7 +34,7 @@ exports.newUser=async (req, res, next)=>{
                     res.status(400).json(null);
                 }else{
                   
-                    const user=await User.create({name:name, email:email, number:number, password:hash},{transaction:t});
+                    const user=await User.create({name:name, email:email, number: +number, password:hash},{transaction:t});
                     await t.commit();
                     res.status(200).json(null);
                 }
@@ -58,13 +58,12 @@ exports.login= async (req, res, next)=>{
        if(loginCredentials)
        {
         const token=await generateToken(foundUser.id);
-        res.status(200).json({token})
+        res.status(200).json({token,'userName':foundUser.name});
        }else res.status(401).json(null);
     }else res.status(404).json(null);
     }catch(err)
     {
-      
         res.status(400).json({msg:err});
     }
-    }
+}
     

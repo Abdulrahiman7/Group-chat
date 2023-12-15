@@ -10,15 +10,27 @@
     <header>
         <h1>Chat App</h1>
     </header>
-
-    <div class="chatInput">
-        <form id="form">
-            <input type="text" id="message">
-            <button type="submit">send</button>
-        </form>
+    <div class="chat">
+        <div class="groupTable">
+            <div class="street"><h3>Street</h3></div>
+            <a href="./newGroup.html"><button id="newGroup">Create new Group</button></a>
+            <div id="groupList"></div>
+        </div>
+        <div class="chatView">
+            <div class="chatBox" id="chatBox"></div>
+            <div class="chatInput">
+            
+            <form id="form">
+                <input type="text" id="message">
+                <button type="submit">send</button>
+            </form>
+            
+        </div>
+    </div>
         
     </div>
-    <div class="chatBox" id="chatBox"></div>
+    
+    
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="./public/js/chatHome.js"></script>
 </body>

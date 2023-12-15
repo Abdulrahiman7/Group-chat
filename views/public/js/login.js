@@ -23,15 +23,16 @@ async function login(e)
         if(login.status==200)
         {
             localStorage.setItem('g-chat_token',login.data.token);
+            localStorage.setItem('g-chat_userName',login.data.userName);
             window.location.href='http://127.0.0.1:5500/views/chatHome.html';
         }
 
     }catch(err)
     {
-        if(err.response.status==401)
+        if(err.response==401)
         {
             alert('User not authorized');
-        }else if(err.response.status==404)
+        }else if(err.response==404)
         {
             alert('User not found');
         }else{

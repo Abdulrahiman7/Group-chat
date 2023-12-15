@@ -3,7 +3,7 @@ chat.addEventListener('submit',messageInput);
 const headers={
     'Authorization':localStorage.getItem('g-chat_token')
 }
-async function messageInput(e)
+async function messageInput(e)                              // controlling of new message sent
 {
     try{
         e.preventDefault();
@@ -15,11 +15,13 @@ async function messageInput(e)
     }
     
     console.log(headers);
-    const newMessage=await axios.post('http://localhost:4000/chatHome',{message},{headers});
+    const groupId=localStorage.getItem('activeGroup');
+    
+    const newMessage=await axios.post('http://localhost:4000/chatHome',{message, groupId},{headers});
     if(newMessage.status===200)
     {
         console.log(newMessage);
-       displayMessages(newMessage.data.newChat.message);
+       getActiveGroupMessages();
        document.getElementById('message').value='';
        return;
     }
@@ -35,71 +37,156 @@ async function messageInput(e)
 const box= document.getElementById('chatBox');
 const ul=document.createElement('ul');
 
-async function displayMessages(newMessage)
+async function displayMessages(newMessage,user)                         // displaying of  messages
 {
-   
-    const text=document.createTextNode(newMessage);
+    const text=document.createTextNode(newMessage.message);
     const li=document.createElement('li');
+    
+   if(user == newMessage.user.id)
+   {
+    li.setAttribute('class', 'userChatList');
+   }else{
+    const div=document.createElement('div');
+    div.setAttribute('class','userName');
+    
+    const userName=document.createTextNode(newMessage.User.name+'  :');
+    div.appendChild(userName);
+    li.appendChild(div);
+   }
+   
     li.appendChild(text);
     ul.appendChild(li);
     
     return;
 }
 
-setInterval(showMessages,1000);
 
-document.addEventListener('DOMContentLoaded',showMessagesfromLocal);
+const groupUL=document.createElement('ul');
+const groupListTable=document.getElementById('groupList');
 
-async function showMessagesfromLocal()
+async function displayGroups(groupId, groupName)                    //displaying of all groups in groupList
+{
+    const li=document.createElement('li');
+    
+    const button=document.createElement('button');
+    button.setAttribute('id',groupId);
+    button.setAttribute('class','groupListButton');
+    button.textContent=groupName;
+
+    li.appendChild(button);
+    groupUL.appendChild(li);
+
+    button.addEventListener('click', displayNewGroup); 
+}
+
+function getGroupList()                                         // function to display list of groups
+{
+    let previousChat=JSON.parse(localStorage.getItem('g-chat_messages'));
+    if(previousChat.length>0)
+    {
+        for(let i=0;i<previousChat.length;i++)
+    {
+         displayGroups(previousChat[i].groupId, previousChat[i].groupName);
+    }
+    groupListTable.appendChild(groupUL);
+    } 
+}
+
+function displayNewGroup(e)                             //function when clicked new group from group List
+    {
+        e.preventDefault;
+        const activeGroup=e.target.id;
+        let previousChat=JSON.parse(localStorage.getItem('g-chat_messages'));
+            const activeGroupIndex=previousChat.findIndex(group => group.groupId == activeGroup);
+         if(activeGroupIndex !== -1)
+            {
+                localStorage.setItem('activeGroup',activeGroup);
+               localStorage.setItem('lastChat-id',previousChat[activeGroupIndex].lastChat_id) ;
+               getActiveGroupMessages(); 
+            }
+    }
+
+function getActiveGroupMessages()                       //function to display messages of the active group
+{
+    const activeGroup=localStorage.getItem('activeGroup');
+    let previousChat=JSON.parse(localStorage.getItem('g-chat_messages'));
+    const user=localStorage.getItem('g-chat_user');
+    box.innerHTML='';
+    if(previousChat.length>0)
+    {
+        const activeGroupIndex=previousChat.findIndex(group => group.groupId == activeGroup);
+         if(activeGroup !== -1)
+            {
+                for(let j=previousChat[activeGroupIndex].message.length-1;j>=0;j--)
+                    {
+                        displayMessages(previousChat[activeGroupIndex].message[j], user);
+                    }
+                    box.appendChild(ul);
+            }
+    }
+    
+}
+
+document.addEventListener('DOMContentLoaded',showMessagesfromLocal);        // controlling the first time and all time loading of application
+
+async function showMessagesfromLocal()                                      // function when DOM is loaded
 {
     try{
-        let previousChat=localStorage.getItem('g-chat_messages');
-        if(!previousChat)
-        {
-            showMessages();
-
-            return;
-        }else{
-            previousChat=JSON.parse(previousChat);
-           
-            if(previousChat.length>0)
-        {
-            for(let i=previousChat.length-1;i>=0;i--)
+        const activeGroup=localStorage.getItem('activeGroup');
+            if(!activeGroup)
             {
-                displayMessages(previousChat[i].message);
+                const groupList= await axios.get('http://localhost:4000/groupList',{headers});
+                if(groupList.status===200)
+                    {
+                      const allMessages=groupList.data.allMessages;
+                        const parsedAllMessages=JSON.stringify(allMessages);
+                        localStorage.setItem('g-chat_messages',parsedAllMessages);
+                        if(allMessages.length>0)
+                        {
+                            
+                        localStorage.setItem('activeGroup',allMessages[0].groupId);
+                        localStorage.setItem('g-chat_user',groupList.data.user);
+                        localStorage.setItem('lastChat-id',allMessages[0].lastChat_id);
+                        }
+                        
+                    }
             }
-            
-        }else return;
-        }
-        
+            getGroupList();
+            getActiveGroupMessages();
     }catch(err)
     {
         console.log(err)
     }
 }
 
-async function showMessages()
+
+setInterval(showMessages,1000);             //Real time pulling of new messages after each second
+
+async function showMessages()               // funtion for time interval
 {
     try{
-        let previousChat=localStorage.getItem('g-chat_messages');
-        let id=0;
-        let storedMessages=[];
-        if(previousChat)
-        {
-            storedMessages=JSON.parse(previousChat);
-            id=storedMessages[0].id;
-        }
-        const chat=await axios.get(`http://localhost:4000/chatHome?prevId=${id}`,{headers});
+        
+        let id=localStorage.getItem('lastChat-id');
+        const activeGroup=localStorage.getItem('activeGroup');
+
+        const chat=await axios.get(`http://localhost:4000/chatHome?prevId=${id}&groupId=${activeGroup}`,{headers});
         if(chat.status === 200)
         {
-            const parsedMessages=JSON.stringify(chat.data.chats);
-           localStorage.setItem('g-chat_messages', parsedMessages);
-            // for(let i=chat.data.chats;i>0;i--)
-            // {
+            let previousChat=JSON.parse(localStorage.getItem('g-chat_messages'));
+            const activeGroupIndex=previousChat.findIndex(group => group.groupId == activeGroup);
+         if(activeGroupIndex !== -1)
+            {
                 
-            //     displayMessages(chat.data.chats[i].message);
-            // }
-            window.location.reload();
+                let updatedMessages = [...chat.data.messages, ...previousChat[activeGroupIndex].message].slice(10);
+                previousChat[activeGroupIndex].message=updatedMessages;
+                console.log(previousChat[0]);
+                previousChat[activeGroupIndex].lastChat_id = updatedMessages[0].id;
+                localStorage.setItem('lastChat-id',updatedMessages[0].id);
+                localStorage.setItem('g-chat_messages',JSON.stringify(previousChat));
+
+                getActiveGroupMessages();
+            }
+
         }else if(chat.status === 201) return;
         else throw new Error();
     }catch(err)
@@ -108,4 +195,5 @@ async function showMessages()
     }
 }
 
-box.appendChild(ul);
+
+

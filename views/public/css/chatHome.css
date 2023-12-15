@@ -11,19 +11,79 @@ header{
     position: fixed;
     bottom: 0;
     width: 100%;
-    background-color: aquamarine;
+    background-color: rgb(13, 49, 37);
     height: 80px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
+
 .chatInput input{
     height: 30px;
-    width: 60%;
+    width: 40vw;
+    position: fixed;
+    left: 35vw;
+    
 }
 .chatInput button{
     height: 30px;
     background-color: azure;
     font-family: Cambria;
     font-weight: 800;
+}
+ul{
+    display: flex;
+  flex-direction: column;
+  /* align-items: flex-start; Align chat items to the right */
+  padding: 10px;
+}
+li{
+    display: flex;
+    height: 20px;
+    width: fit-content;
+    background-color: rgba(127, 255, 212, 0.248);
+    margin-bottom: 3px;
+    padding-left: 5px;
+    padding-right: 20px;
+    border: 2px solid rgba(0, 0, 0, 0.19);
+    border-top-right-radius: 10px;
+    
+}
+.userChatList{
+    background-color: bisque;
+    margin-left: auto;
+    
+}
+.userName{
+    color: brown;
+}
+.chat{
+    width: 100vw;
+    display: flex;
+    margin-top: 5px;
+}
+.groupTable{
+    width: 30vw;
+    background: linear-gradient(to bottom, rgb(6, 39, 61), white);
+    margin-right: 5px;
+}
+.chatView{
+    width: 65vw;
+    height: 100vh;
+   
+}
+.street{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 98%;
+    height: 40px;
+    background-color: rgb(189, 185, 180);
+    border: 2px solid black;
+}
+.groupTable button{
+    width: 99%;
+    height: 30px;
+    color: azure;
+    background-color: rgb(4, 4, 54);
 }

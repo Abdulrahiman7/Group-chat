@@ -39,6 +39,7 @@ const ul=document.createElement('ul');
 
 async function displayMessages(newMessage,user)                         // displaying of  messages
 {
+    
     const text=document.createTextNode(newMessage.message);
     const li=document.createElement('li');
     
@@ -49,10 +50,11 @@ async function displayMessages(newMessage,user)                         // displ
     const div=document.createElement('div');
     div.setAttribute('class','userName');
     
-    const userName=document.createTextNode(newMessage.User.name+'  :');
+    const userName=document.createTextNode(newMessage.user.name+'  :');
     div.appendChild(userName);
     li.appendChild(div);
    }
+
    
     li.appendChild(text);
     ul.appendChild(li);
@@ -117,6 +119,7 @@ function getActiveGroupMessages()                       //function to display me
         const activeGroupIndex=previousChat.findIndex(group => group.groupId == activeGroup);
          if(activeGroup !== -1)
             {
+                ul.innerHTML='';
                 for(let j=previousChat[activeGroupIndex].message.length-1;j>=0;j--)
                     {
                         displayMessages(previousChat[activeGroupIndex].message[j], user);
@@ -176,10 +179,14 @@ async function showMessages()               // funtion for time interval
             const activeGroupIndex=previousChat.findIndex(group => group.groupId == activeGroup);
          if(activeGroupIndex !== -1)
             {
+                previousChat=JSON.parse(localStorage.getItem('g-chat_messages'));
                 
-                let updatedMessages = [...chat.data.messages, ...previousChat[activeGroupIndex].message].slice(10);
+                let updatedMessages = [...chat.data.messages, ...previousChat[activeGroupIndex].message].slice(0,10);
+                
+                
                 previousChat[activeGroupIndex].message=updatedMessages;
-                console.log(previousChat[0]);
+                
+                
                 previousChat[activeGroupIndex].lastChat_id = updatedMessages[0].id;
                 localStorage.setItem('lastChat-id',updatedMessages[0].id);
                 localStorage.setItem('g-chat_messages',JSON.stringify(previousChat));

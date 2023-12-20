@@ -31,7 +31,7 @@ exports.groupList=async (req, res, next)=>{
             include:[
                 {
                     model: Group,
-                    attributes: ['groupName']
+                    attributes: ['groupName','admin']
                 }
             ]
         });
@@ -56,7 +56,8 @@ exports.groupList=async (req, res, next)=>{
                 'groupId':groupList[i].groupId,
                 'groupName':groupList[i].group.groupName,
                 'message':messages,
-                'lastChat_id': (messages && messages[0] && messages[0].id) || 0
+                'lastChat_id': (messages && messages[0] && messages[0].id) || 0,
+                'admin':groupList[i].group.admin
                 
             })
         }
@@ -68,3 +69,45 @@ exports.groupList=async (req, res, next)=>{
    }
 }
 
+exports.deleteGroup= async (req, res, next) =>{
+    try{
+        const groupId=req.params.groupId;
+        
+        const deleteGrp = await Group.destroy({
+            where: { id: groupId },
+          });
+          if(deleteGrp == 1) res.status(200).json(null);
+          else res.status(404).json(null);
+    }catch(err)
+    {
+        console.log(err);
+    }
+}
+
+exports.searchUser= async (req, res, next) =>{
+    try{
+        const mobile=req.query.mobile;
+        const searchUser=await User.findAll({
+            where:{ number: mobile}
+        })
+        if(searchUser.length >0) res.status(200).json({newUser:searchUser[0]});
+        else res.status(201).json(null);
+    }catch(err)
+    {
+        console.log(err);
+    }
+}
+
+exports.addUser= async (req, res, next)=>{
+    try
+    {
+        const groupId=req.query.groupId;
+        const userId=req.query.userId;
+   
+        const addMember=await UserGroup.create({'groupId': groupId, 'userId':userId});
+        res.status(200).json(null);
+    }catch(err)
+    {
+        console.log(err);
+    }
+}

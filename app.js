@@ -12,7 +12,7 @@ const GroupRoute=require('./routers/groupRoute');
 
 app.use(cors({
     origin: "http://127.0.0.1:5500",
-    methods: ['GET','POST']
+    methods: ['GET','POST','DELETE']
 }));
 app.use(bodyParser.json());
 app.use(UserRoute);

@@ -7,6 +7,9 @@ router.post('/createGroup',Authorization.TokenAuthorization, GroupController.new
 
 router.get('/groupList',Authorization.TokenAuthorization, GroupController.groupList);
 
+router.delete('/deleteGroup/:groupId',Authorization.TokenAuthorization, GroupController.deleteGroup);
 
+router.get('/searchUser',Authorization.TokenAuthorization, GroupController.searchUser);
 
+router.get('/addUser',Authorization.TokenAuthorization, GroupController.addUser);
 module.exports=router;

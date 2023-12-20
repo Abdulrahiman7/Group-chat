@@ -10,13 +10,21 @@
     <header>
         <h1>Chat App</h1>
     </header>
-    <div class="chat">
+    <div class="chat" id="chat">
         <div class="groupTable">
-            <div class="street"><h3>Street</h3></div>
+            
             <a href="./newGroup.html"><button id="newGroup">Create new Group</button></a>
             <div id="groupList"></div>
         </div>
         <div class="chatView">
+            <div class="chatHeader">
+                <div class="groupHeader" id="groupHeader"></div>
+                <div class="groupOptions">
+                    <select id="groupOptions">
+                        <option value="" disabled selected>Options</option>
+                    </select>
+                </div>
+            </div>
             <div class="chatBox" id="chatBox"></div>
             <div class="chatInput">
             
@@ -29,9 +37,47 @@
     </div>
         
     </div>
-    
+    <div class="overlay"></div>
+    <div id="addUserModal" class="modal">
+        <span class="close" onclick="closeModal('addUserModal')">&times;</span>
+        <h2>Add User</h2>
+        <form id="searchUser">
+            <input id="userMobile" type="text" placeHolder="Enter Mobile Number">
+            <button type="submit">Search User</button>
+        </form>
+        <div id="userListBox"></div>
+    </div>
+
+    <div id="manageUsersModal" class="modal">
+        <span class="close" onclick="closeModal('manageUsersModal')">&times;</span>
+        <h2>Manage Users</h2>
+        
+        <!-- Add content related to managing users -->
+    </div>
+
+    <div id="deleteGroupModal" class="modal">
+        <span class="close" onclick="closeModal('deleteGroupModal')">&times;</span>
+        
+        <h4>Are you sure you want to delete Group?</h4>
+        <button id="delete">Delete Group
+
+        </button>
+        <button id="cancel">Cancel</button>
+        <!-- Add content related to deleting a group -->
+    </div>
+
+    <div id="exitGroupModal" class="modal">
+        <span class="close" onclick="closeModal('exitGroupModal')">&times;</span>
+        
+        <h4>Are you sure you want to exit Group?</h4>
+        <button id="exit">Exit Group</button>
+        <button id="cancel">Cancel</button>
+        <!-- Add content related to exiting a group -->
+    </div>
     
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="./public/js/chatHome.js"></script>
+<script src="./public/js/chatHomeManageGroup.js"></script>
+
 </body>
 </html>

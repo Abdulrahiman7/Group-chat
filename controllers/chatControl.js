@@ -36,6 +36,12 @@ exports.showMessages= async (req, res, next) =>{
                   },
                 },
                 order: [['createdAt', 'DESC']],
+                include:[
+                    {
+                        model: User,
+                        attributes: ['id','name']
+                    }
+                ]
               });
               
             if(messages.length==0)

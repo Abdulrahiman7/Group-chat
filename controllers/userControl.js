@@ -43,6 +43,7 @@ exports.newUser=async (req, res, next)=>{
 
     }catch(err)
     {
+        t.rollback();
         console.error(err);
     }
 

@@ -23,16 +23,20 @@ const User=require('./models/user');
 const Chat=require('./models/chat');
 const Group=require('./models/group');
 const UserGroup = require('./models/userGroup');
+const GroupAdmin=require('./models/groupAdmin');
 
 Chat.belongsTo(User,{constraints: true, onDelete: 'CASCADE'});
 User.hasMany(Chat);
 Chat.belongsTo(Group,{constraints: true, onDelete: 'CASCADE'});
-Group.hasMany(Chat);
+Group.hasMany(Chat,{constraints: true, onDelete: 'CASCADE'});
 User.belongsToMany(Group,{ through: UserGroup})
 Group.belongsToMany(User, {through: UserGroup});
 UserGroup.belongsTo(User);
 UserGroup.belongsTo(Group);
-
+User.belongsToMany(Group,{ through: GroupAdmin})
+Group.belongsToMany(User, {through: GroupAdmin});
+GroupAdmin.belongsTo(User);
+GroupAdmin.belongsTo(Group);
 
 sequelize.sync()
 .then(()=>{

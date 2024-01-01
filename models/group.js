@@ -18,11 +18,6 @@ const Group=sequelize.define('group',{
     {
         type:Sequelize.STRING,
         allowNull:false
-    },
-    admin:
-    {
-        type:Sequelize.INTEGER,
-        allowNull: false
     }
 }
 )

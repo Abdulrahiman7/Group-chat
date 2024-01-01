@@ -104,6 +104,10 @@ function displayNewGroup(e)                             //function when clicked 
             {
                 localStorage.setItem('activeGroup',activeGroup);
                localStorage.setItem('lastChat-id',previousChat[activeGroupIndex].lastChat_id) ;
+               const groupHeader=document.getElementById('groupHeader');
+               groupHeader.innerHTML='';
+                 const headerText=document.createTextNode(previousChat[activeGroupIndex].groupName);
+                 groupHeader.appendChild(headerText);
                getActiveGroupMessages(); 
             }
     }

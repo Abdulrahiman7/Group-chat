@@ -8,14 +8,17 @@ body{
 header{
     display: flex;
     justify-content: center;
+    background-color: rgb(13, 49, 37);
+    color: white;
+  
 }
 .chatInput{
     
     position: fixed;
     bottom: 0;
     max-width: 100vw;
-    width: 900px;
-    background-color: rgb(13, 49, 37);
+    width: 100vw;
+    background-color: black;
     height: 80px;
     display: flex;
     justify-content: center;
@@ -27,6 +30,7 @@ header{
 .chatInput input{
     height: 30px;
     width: 40vw;
+
 }
 .chatInput button{
     height: 30px;
@@ -34,13 +38,13 @@ header{
     font-family: Cambria;
     font-weight: 800;
 }
-ul{
+.chatBox ul{
     display: flex;
   flex-direction: column;
   /* align-items: flex-start; Align chat items to the right */
   padding: 10px;
 }
-li{
+.chatBox li{
     display: flex;
     height: fit-content;
     width: fit-content;
@@ -52,7 +56,7 @@ li{
     border-top-right-radius: 10px;
     
 }
-.userChatList{
+.chatBox .userChatList{
     background-color: bisque;
     margin-left: auto;
     
@@ -69,11 +73,29 @@ li{
    
     height: 100vh;
     width: 30vw;
-    background: linear-gradient(to bottom, rgb(7, 20, 16), rgba(13, 49, 37, 0.558));
+    background: linear-gradient(to bottom, rgb(21, 71, 54), rgb(7, 20, 16));
     margin-right: 5px;
 }
+.groupTable ul{
+    background-color: rgb(13, 49, 37);
+    align-items: center;
+    list-style-type: none;
+    padding-inline-start: 2px;
+}
+.groupTable li{
+    margin-bottom: 5px;
+}
+.groupTable ul button{
+    background-color: black;
+    color: white;
+    font-weight: 700;
+    border-radius: 10px;
+    border-bottom: 2px solid white;
+    border-right: 2px solid white;
+    border-left: 2px solid white;
+}
 .chatView{
-    width: 65vw;
+    width: 70vw;
     height: 100vh;
     overflow-y: auto;
 }
@@ -96,11 +118,18 @@ li{
     display: flex;
     height: 50px;
     width: 100%;
-    background-color: rgb(13, 49, 37);
+    background-color: black;
 }
 .groupHeader{
     width: 90%;
     height: 100%;
+    color: white;
+    font-size: large;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial;
 }
 .groupOptions{
     width: 10%;
@@ -147,4 +176,12 @@ li{
 
 #userListBox{
     color: white;
+}
+
+#groupOptions{
+    width: 100%;
+    color: white;
+    background-color: rgb(13, 49, 37);
+    height: 100%;
+    border: 2px solid white;
 }

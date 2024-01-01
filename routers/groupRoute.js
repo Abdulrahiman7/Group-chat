@@ -12,4 +12,10 @@ router.delete('/deleteGroup/:groupId',Authorization.TokenAuthorization, GroupCon
 router.get('/searchUser',Authorization.TokenAuthorization, GroupController.searchUser);
 
 router.get('/addUser',Authorization.TokenAuthorization, GroupController.addUser);
+
+router.delete('/exitGroup',Authorization.TokenAuthorization, GroupController.exitUser);
+
+router.get('/manageGroup', Authorization.TokenAuthorization, GroupController.manageUserList);
+
+router.get('/addAdmin',Authorization.TokenAuthorization, GroupController.addAdmin);
 module.exports=router;

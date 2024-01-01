@@ -22,6 +22,7 @@ async function login(e)
         const login=await axios.post('http://localhost:4000/login',credentials);
         if(login.status==200)
         {
+            localStorage.clear();
             localStorage.setItem('g-chat_token',login.data.token);
             localStorage.setItem('g-chat_userName',login.data.userName);
             window.location.href='http://127.0.0.1:5500/views/chatHome.html';

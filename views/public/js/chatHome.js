@@ -1,3 +1,11 @@
+
+
+const socket=io("http://localhost:5000");
+
+socket.on("connect", () => {
+    console.log("Connected to the WebSocket server");
+});
+
 const chat=document.getElementById('form');
 chat.addEventListener('submit',messageInput);
 const headers={
@@ -10,7 +18,6 @@ async function messageInput(e)                              // controlling of ne
     const message=document.getElementById('message').value;
     if(!message)
     {
-        alert('enter message');
         return;
     }
     
@@ -23,6 +30,7 @@ async function messageInput(e)                              // controlling of ne
         console.log(newMessage);
        getActiveGroupMessages();
        document.getElementById('message').value='';
+       socket.emit('newMessage', groupId);
        return;
     }
     }catch(err)
@@ -98,6 +106,7 @@ function displayNewGroup(e)                             //function when clicked 
     {
         e.preventDefault;
         const activeGroup=e.target.id;
+        socket.emit('leaveRoom',localStorage.getItem('activeGroup'));
         let previousChat=JSON.parse(localStorage.getItem('g-chat_messages'));
             const activeGroupIndex=previousChat.findIndex(group => group.groupId == activeGroup);
          if(activeGroupIndex !== -1)
@@ -109,6 +118,7 @@ function displayNewGroup(e)                             //function when clicked 
                  const headerText=document.createTextNode(previousChat[activeGroupIndex].groupName);
                  groupHeader.appendChild(headerText);
                getActiveGroupMessages(); 
+                socket.emit('joinRoom', activeGroup);
             }
     }
 
@@ -160,6 +170,7 @@ async function showMessagesfromLocal()                                      // f
             }
             getGroupList();
             getActiveGroupMessages();
+            socket.emit('joinRoom',localStorage.getItem('activeGroup'));
     }catch(err)
     {
         console.log(err)
@@ -167,7 +178,14 @@ async function showMessagesfromLocal()                                      // f
 }
 
 
-setInterval(showMessages,1000);             //Real time pulling of new messages after each second
+// setInterval(showMessages,1000);             //Real time pulling of new messages after each second
+
+socket.on('broadcastMessage', (groupId)=>{                      // Displaying new messages using websocket
+    if(localStorage.getItem('activeGroup')==groupId)
+    {
+        showMessages();
+    }
+});
 
 async function showMessages()               // funtion for time interval
 {
@@ -196,6 +214,8 @@ async function showMessages()               // funtion for time interval
                 localStorage.setItem('g-chat_messages',JSON.stringify(previousChat));
 
                 getActiveGroupMessages();
+
+                
             }
 
         }else if(chat.status === 201) return;

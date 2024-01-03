@@ -38,8 +38,13 @@ Group.belongsToMany(User, {through: GroupAdmin});
 GroupAdmin.belongsTo(User);
 GroupAdmin.belongsTo(Group);
 
+const Websocket=require('./websocket');
+const websocket = require('./websocket');
+const socketServer=5000;
+
 sequelize.sync()
 .then(()=>{
+    const io=websocket(socketServer);
  app.listen(4000);
 })
 .catch((err)=>{

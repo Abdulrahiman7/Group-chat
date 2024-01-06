@@ -6,17 +6,20 @@ socket.on("connect", () => {
     console.log("Connected to the WebSocket server");
 });
 
-const chat=document.getElementById('form');
-chat.addEventListener('submit',messageInput);
+
+
 const headers={
     'Authorization':localStorage.getItem('g-chat_token')
 }
+const chat=document.getElementById('form');
+chat.addEventListener('submit',messageInput);
 async function messageInput(e)                              // controlling of new message sent
 {
     try{
         e.preventDefault();
     const message=document.getElementById('message').value;
-    if(!message)
+    const file=document.getElementById('file');
+    if(!message && file.files.length==0)
     {
         return;
     }
@@ -24,7 +27,14 @@ async function messageInput(e)                              // controlling of ne
     console.log(headers);
     const groupId=localStorage.getItem('activeGroup');
     
-    const newMessage=await axios.post('http://localhost:4000/chatHome',{message, groupId},{headers});
+    const attachFile=file.files.length>0? file.files[0]: null;
+    console.log(attachFile);
+
+    const formData = new FormData();
+      formData.append('file', attachFile);
+      formData.append('message', message);
+      formData.append('groupId', groupId);
+    const newMessage=await axios.post('http://localhost:4000/chatHome',formData,{headers});
     if(newMessage.status===200)
     {
         console.log(newMessage);
@@ -47,9 +57,23 @@ const ul=document.createElement('ul');
 
 async function displayMessages(newMessage,user)                         // displaying of  messages
 {
-    
     const text=document.createTextNode(newMessage.message);
     const li=document.createElement('li');
+    if(newMessage.fileUrl)
+    {
+        const div=document.createElement('div');
+        div.classList='attachedFile';
+        const a=document.createElement('a');
+        a.href=newMessage.fileUrl;
+        a.download='download';
+        const i=document.createElement('i');
+        i.classList='fa-solid fa-download';
+        a.appendChild(i);
+
+        div.appendChild(a);
+        li.appendChild(div);
+    }
+    
     
    if(user == newMessage.user.id)
    {

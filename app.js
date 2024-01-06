@@ -3,7 +3,11 @@ const bodyParser=require('body-parser');
 require('dotenv').config();
 const sequelize=require('./util/database');
 const cors=require('cors');
+const fileUpload=require('express-fileupload');
+
 const app=express();
+app.use(express.urlencoded({ extended: true }));
+app.use(fileUpload());
 
 
 const UserRoute=require('./routers/userRoute');

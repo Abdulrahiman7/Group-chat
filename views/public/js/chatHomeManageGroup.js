@@ -85,7 +85,7 @@ async function manageGroupUsers()                           //function to manage
         
         userList.innerHTML='';
         const currentUser=localStorage.getItem('g-chat_user');
-        const allMembers=await axios.get(`http://localhost:4000/manageGroup?groupId=${groupId}`,{headers});
+        const allMembers=await axios.get(`http://15.206.79.217/manageGroup?groupId=${groupId}`,{headers});
         if(allMembers.status ===200)
         {
             const members=allMembers.data.members;
@@ -132,7 +132,7 @@ async function deleteGrp(e)
     try{
         e.preventDefault();
     const groupId=localStorage.getItem('activeGroup');
-    const deleteGrp=await axios.delete(`http://localhost:4000/deleteGroup/${groupId}`,{headers});
+    const deleteGrp=await axios.delete(`http://15.206.79.217/deleteGroup/${groupId}`,{headers});
     if(deleteGrp.status=== 200)
     {
         console.log('entered delete');
@@ -160,7 +160,7 @@ async function addUser(e)
         const groupId=localStorage.getItem('activeGroup');
         const userListBox=document.getElementById('userListBox');
         userListBox.innerHTML='';
-        const members=await axios.get(`http://localhost:4000/searchUser?mobile=${mobile}&groupId=${groupId}`,{headers})
+        const members=await axios.get(`http://15.206.79.217/searchUser?mobile=${mobile}&groupId=${groupId}`,{headers})
         if(members.status === 200)
         {
             const newMember=members.data.newUser;
@@ -174,7 +174,7 @@ async function addUser(e)
             {
                 try{
                     e.preventDefault();
-                const addUser=await axios.get(`http://localhost:4000/addUser?groupId=${groupId}&userId=${newMember.id}`,{headers});
+                const addUser=await axios.get(`http://15.206.79.217/addUser?groupId=${groupId}&userId=${newMember.id}`,{headers});
                 if(addUser.status ===200)
                 {
                     closeModal('addUserModal');
@@ -213,7 +213,7 @@ async function addAdmin(userId)
     try{
     
         const groupId=localStorage.getItem('activeGroup');
-        const addNewAdmin=await axios.get(`http://localhost:4000/addAdmin?groupId=${groupId}&userId=${userId}`,{headers});
+        const addNewAdmin=await axios.get(`http://15.206.79.217/addAdmin?groupId=${groupId}&userId=${userId}`,{headers});
         if(addNewAdmin.status=== 200)
         {
             closeModal('manageUsersModal');
@@ -239,7 +239,7 @@ async function exitGrp(userId, isAdmin)
     try{
     
     const groupId=localStorage.getItem('activeGroup');
-    const deleteGrp=await axios.delete(`http://localhost:4000/exitGroup?groupId=${groupId}&userId=${userId}&isAdmin=${isAdmin}`,{headers});
+    const deleteGrp=await axios.delete(`http://15.206.79.217/exitGroup?groupId=${groupId}&userId=${userId}&isAdmin=${isAdmin}`,{headers});
     if(deleteGrp.status=== 200)
     {
         localStorage.removeItem('activeGroup');

@@ -34,7 +34,7 @@ async function messageInput(e)                              // controlling of ne
       formData.append('file', attachFile);
       formData.append('message', message);
       formData.append('groupId', groupId);
-    const newMessage=await axios.post('http://localhost:4000/chatHome',formData,{headers});
+    const newMessage=await axios.post('http://15.206.79.217/chatHome',formData,{headers});
     if(newMessage.status===200)
     {
         console.log(newMessage);
@@ -176,7 +176,7 @@ async function showMessagesfromLocal()                                      // f
         const activeGroup=localStorage.getItem('activeGroup');
             if(!activeGroup)
             {
-                const groupList= await axios.get('http://localhost:4000/groupList',{headers});
+                const groupList= await axios.get('http://15.206.79.217/groupList',{headers});
                 if(groupList.status===200)
                     {
                       const allMessages=groupList.data.allMessages;
@@ -218,7 +218,7 @@ async function showMessages()               // funtion for time interval
         let id=localStorage.getItem('lastChat-id');
         const activeGroup=localStorage.getItem('activeGroup');
 
-        const chat=await axios.get(`http://localhost:4000/chatHome?prevId=${id}&groupId=${activeGroup}`,{headers});
+        const chat=await axios.get(`http://15.206.79.217/chatHome?prevId=${id}&groupId=${activeGroup}`,{headers});
         if(chat.status === 200)
         {
             let previousChat=JSON.parse(localStorage.getItem('g-chat_messages'));

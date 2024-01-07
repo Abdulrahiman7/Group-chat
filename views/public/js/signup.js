@@ -20,7 +20,7 @@ async function createUser(e)
         password:password,
         number:number
     };
-    const x=await axios.post('http://localhost:4000/signup',newUser);
+    const x=await axios.post('http://15.206.79.217/signup',newUser);
     if(x.status==200){
         alert('Successfully signed up');
         window.location.href='login.html';

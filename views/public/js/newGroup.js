@@ -15,7 +15,7 @@ async function createGroup(e)
             about: groupAbout
         }
         
-        const group=await axios.post('http://localhost:4000/createGroup',{newGroup},{headers});
+        const group=await axios.post('http://15.206.79.217/createGroup',{newGroup},{headers});
         if(group.status===200)
         {
             localStorage.removeItem('activeGroup');

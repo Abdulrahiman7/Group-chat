@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded',function(){
-    
+
 
     const user=localStorage.getItem('g-chat_user');
     const activeGroup=localStorage.getItem('activeGroup');
@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded',function(){
     const groupHeader=document.getElementById('groupHeader');
     const headerText=document.createTextNode(previousChat[activeGroupIndex].groupName);
     groupHeader.appendChild(headerText);
+    
 });
 
 const groupOptions=document.getElementById('groupOptions');

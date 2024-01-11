@@ -25,7 +25,7 @@ async function login(e)
             localStorage.clear();
             localStorage.setItem('g-chat_token',login.data.token);
             localStorage.setItem('g-chat_userName',login.data.userName);
-            window.location.href='http://127.0.0.1:5500/views/chatHome.html';
+            window.location.href='http://15.206.79.217/chatHome.html';
         }
 
     }catch(err)

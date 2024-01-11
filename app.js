@@ -4,6 +4,7 @@ require('dotenv').config();
 const sequelize=require('./util/database');
 const cors=require('cors');
 const fileUpload=require('express-fileupload');
+const path=require('path');
 
 const app=express();
 app.use(express.urlencoded({ extended: true }));
@@ -13,15 +14,20 @@ app.use(fileUpload());
 const UserRoute=require('./routers/userRoute');
 const ChatRoute=require('./routers/chatRoute');
 const GroupRoute=require('./routers/groupRoute');
-
+require('./services/cronJob.js');
 app.use(cors({
-    origin: "http://127.0.0.1:5500",
+	origin: "http://15.206.79.217",
     methods: ['GET','POST','DELETE']
 }));
 app.use(bodyParser.json());
 app.use(UserRoute);
 app.use(ChatRoute);
 app.use(GroupRoute);
+app.use((req,res)=>{
+	    console.log(req.url);
+	    const [url, queryParams] = req.url.split('?');
+	    res.sendFile(path.join(__dirname, `views/${url}`));
+});
 
 const User=require('./models/user');
 const Chat=require('./models/chat');
@@ -42,8 +48,7 @@ Group.belongsToMany(User, {through: GroupAdmin});
 GroupAdmin.belongsTo(User);
 GroupAdmin.belongsTo(Group);
 
-const Websocket=require('./websocket');
-const websocket = require('./websocket');
+const websocket=require('./services/websocket');
 const socketServer=5000;
 
 sequelize.sync()

@@ -1,11 +1,13 @@
 
 
-const socket=io("http://localhost:5000");
+const socket=io("http://15.206.79.217:5000");
 
 socket.on("connect", () => {
     console.log("Connected to the WebSocket server");
 });
-
+socket.on("error", (error) => {
+	    console.error("WebSocket Error:", error);
+});
 
 
 const headers={
@@ -168,6 +170,7 @@ function getActiveGroupMessages()                       //function to display me
     
 }
 
+
 document.addEventListener('DOMContentLoaded',showMessagesfromLocal);        // controlling the first time and all time loading of application
 
 async function showMessagesfromLocal()                                      // function when DOM is loaded
@@ -193,7 +196,7 @@ async function showMessagesfromLocal()                                      // f
                     }
             }
             getGroupList();
-            getActiveGroupMessages();
+           getActiveGroupMessages();
             socket.emit('joinRoom',localStorage.getItem('activeGroup'));
     }catch(err)
     {

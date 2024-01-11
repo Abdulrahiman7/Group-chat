@@ -13,11 +13,11 @@ exports.inputMessage=async (req, res, next)=>{
         //     res.status(404).json(null);
         // }
         const groupId=req.body.groupId;
-        const file=req.files.file;
         const bucketName='chatzapp-media';
         let fileURL=null;
-        if(file)
+        if(req.files && req.files.file)
         {
+		const file=req.files.file;
             fileURL=await S3.uploadToS3(file, bucketName);
             
         }
